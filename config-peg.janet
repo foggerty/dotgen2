@@ -19,7 +19,7 @@
 
 (def- aliases
   {:type :struct
-     :min-length 1
+   :min-length 1
    :each-value :string})
 
 (def- config-entry
@@ -38,63 +38,52 @@
 
 
 ################################################################################
-### Config test functions
+### Predicates
 
-(defn- is-type? [obj t]
-  (= t (type obj)))
-
-(defn- is-true? [tst & msgs]
-  (if (not tst) (string ;msgs) nil))
+(defn- is-true? [test msg]
+  (if (not test) msg nil))
 
 (defn- test-min-length [test config name]
+  "If :min-length exists, apply if to config."
   (let [min (test :min-length)]
-    (if (nil? min)
-      nil
-      (is-true? (>= (length config) min)
-                "Property " name " has a minimum length of " min))))
-
-(defn- seqi [lst func]
-  (do
-    (var i 0)
-    (seq [l :in lst]
-         (++ i)
-         (func l i))))
-
-(defn- test-content [test name]
-  (fn [cfg i]
-    (apply-config-test test cfg (string name ":" i " "))))
+    (if min
+      ())))
 
 (defn- test-tuple-content [test config name]
-  (let [content-test (test :contents)]
-    (if (nil? content-test)
-      nil
-      (seqi config (test-content content-test name)))))
+  ; this is where I aggregate results
+  )
 
+(defn- test-each-value [test config name]
+  ; ditto
+  )
+
+(defn- test-optional [test config name]
+  )
 
 ################################################################################
 ### Test runners / Pubic interface
 
 (defn- test-tuple [test config name]
-  (or (is-true? (is-type? config :tuple) "Expected tuple for " name)
+  (or (is-true? (is-type? config :tuple) (str "Expected tuple for " name))
       (test-min-length test config name)
       (test-tuple-content test config name)))
 
 (defn- test-struct [test config name]
-  (or (is-true? (is-type? config :struct) "Expected struct for " name)
+  (or (is-true? (is-type? config :struct) (str "Expected struct for " name))
       (test-min-length test config name)
-      (test-each-value test config name)
       (test-required test config name)
+      (test-each-value test config name)
       (test-optional test config name)))
 
-(defn- apply-test [test config name]
+(defn apply-config-test [test config name]
   (case (test :type)
     :tuple (test-tuple test config name)
-    :struct (test-struct test config name)))
-
+    :struct (test-struct test config name)
+    (str "Type must be either :tuple or :struct in " name)))
 
 
 ################################################################################
-### Rest is application specific...
+### Move to main program when working
 
 (defn config-errors [config]
-  (apply-test config root config "Root"))
+  (apply-test config-root config "Root"))
