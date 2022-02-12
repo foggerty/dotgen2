@@ -11,6 +11,7 @@ A Janet rewrite of my project [[https://github.com/foggerty/dotgen][dotgen]], or
   - [X] Update Alacritty to hide pointer when typing
   - [X] Update OpenBSD to 7.0
 - [ ] Sanity check functions
+- [ ] Move 'name' into a dynamic variable maybe?  Save all of the passing around.  Must be able to be parallelised still.
 - [ ] Functions to translate into config code.
 - [ ] Learn PEG
 - [ ] Create a PEG for config, and function to compare the two.

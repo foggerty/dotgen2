@@ -12,7 +12,7 @@
    {:name "Git"
     :test "which git"
     :description "Useful aliases fot Git."
-      :enabled false
+    :enabled false
     :aliases {
               :gts  "git status -s -b --column"
               :gtc  "git checkout"

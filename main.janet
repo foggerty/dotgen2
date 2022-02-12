@@ -1,4 +1,4 @@
-(import ./config :as cfg)
+(import ./config/config :as cfg)
 (import ./config-peg)
 
 (defn show-help []

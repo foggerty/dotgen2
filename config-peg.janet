@@ -1,89 +1,96 @@
 ################################################################################
-### Config data definition
+### Definition for DotGen2 config.
 
-# Each config entry must be a struct with at least one entry called
-# :type.  :type can be one of :tuple or :struct.  If the :type test
-# fails, no other tests in the containing struct will be run.  This is
-# always the first test to be run.
+# Each definition (def) entry must be a struct with at least one entry
+# called :type.  :type can be one of :tuple or :struct.  If the :type
+# test fails, no other tests in the containing struct will be run.
+# This is always the first test to be run.
 #
-# A tuple can have:
+# A tuple can have the following additional keys (everything else is ignored):
 #   :min-length - minimum length for tuple.
-#   :each-value - ensures each item in tuple is of a matching (simple) type.
-#   :contents - another config entry, to be run against every item.
+#   :contents - a type or another definition entry.
+#   :each-value - (optional) test to run over each entry
 #
-# A struct can have:
-#   :required -
-#   :optional -
-#   :min-length -
-#   :each-value -
+# A struct can the following additional keys (everything else is ignored):
+#   :required - a map of key/type pairs (type can also be another definition entry).
+#   :optional - a map of key/type pairs (type can also be another definition entry).
+#   :min-length - sets minimum length, otherwise assumes 0.
+#   :each-value - an (optional) test to run over each value.
 
 (def- aliases
   {:type :struct
    :min-length 1
    :each-value :string})
 
-(def- config-entry
+(def- bash-entry
   {:type :struct
    :required [:name :string
               :description :string]
    :optional [:enabled :boolean
               :test :string
-              :aliases aliases]})
+                :aliases aliases]})
 
-(def- config-root
+(def- def-root
   {:type :tuple
    :min-length 1
-   :contents config-entry})
+   :contents bash-entry})
 
 
 
 ################################################################################
 ### Predicates
 
+(defn- is-type? [type test]
+  (= type (type test)))
+
 (defn- is-true? [test msg]
-  (if (not test) msg nil))
+  (if (not (eval test)) msg nil))
 
-(defn- test-min-length [test config name]
-  "If :min-length exists, apply if to config."
-  (let [min (test :min-length)]
-    (if min
-      ())))
 
-(defn- test-tuple-content [test config name]
-  ; this is where I aggregate results
-  )
-
-(defn- test-each-value [test config name]
-  ; ditto
-  )
-
-(defn- test-optional [test config name]
-  )
 
 ################################################################################
 ### Test runners / Pubic interface
 
-(defn- test-tuple [test config name]
-  (or (is-true? (is-type? config :tuple) (str "Expected tuple for " name))
-      (test-min-length test config name)
-      (test-tuple-content test config name)))
+(defn- test-min-length [def config name]
+  (let [length-test (get :min-length def)]
+    (cond (nil? length-test) nil
+          (< 0 length-test)
+          (string "Config is broken in " name " - cannot use negatives for :min-length.")
+          (> (length config) length-test)
+          (string name " needs a minimum length of " length-test))))
 
-(defn- test-struct [test config name]
-  (or (is-true? (is-type? config :struct) (str "Expected struct for " name))
-      (test-min-length test config name)
-      (test-required test config name)
-      (test-each-value test config name)
-      (test-optional test config name)))
+(def each-value-types
+  [:string :number ])
 
-(defn apply-config-test [test config name]
-  (case (test :type)
-    :tuple (test-tuple test config name)
-    :struct (test-struct test config name)
-    (str "Type must be either :tuple or :struct in " name)))
+(defn- test-each-value [def config name]
+  (let [value-test
+        (case (type value-test)
+          :struct (test-def )
+          )]
+    (cond (nil? value-test) nil
+          (map remove nils check length nil if zero) (value-test))))
+
+(defn- test-tuple [def config name]
+  (or (test-min-length def config name)
+      (test-tuple-contents def config name)
+      (test-each-value def config name)))
+
+(defn- test-struct [def config name]
+  (or (test-min-length def config name)
+      (test-required def config name)
+      (test-each-value def config name)
+      (test-optional def config name)))
+
+(defn test-def [def config name]
+  (case (def :type)
+    :tuple (test-tuple def config name)
+    :struct (test-struct def config name)
+    (string ":type must be either :tuple or :struct in " name)))
+
 
 
 ################################################################################
 ### Move to main program when working
 
 (defn config-errors [config]
-  (apply-test config-root config "Root"))
+  (test-def def-root config "Root"))
