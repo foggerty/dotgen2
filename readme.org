@@ -4,20 +4,18 @@ A Janet rewrite of my project [[https://github.com/foggerty/dotgen][dotgen]], or
 
 * To do
 - [-] Yak-shaving
-  - [ ] Find that theme lib for Emacs
-  - [ ] Make a theme that uses terminal colours
   - [ ] Fix key map so that CTRL+` actually works.
-  - [ ] Find a WayLand desktop, or try Sway.
+  - [X] Find that theme lib for Emacs
+  - [X] Make a theme that uses terminal colours
+  - [X] Find a WayLand desktop, or try Sway.
   - [X] Update Alacritty to hide pointer when typing
   - [X] Update OpenBSD to 7.0
 - [ ] Sanity check functions
-- [ ] Move 'name' into a dynamic variable maybe?  Save all of the passing around.  Must be able to be parallelised still.
+- [ ] Link definition to implementation with error messages.
 - [ ] Functions to translate into config code.
-- [ ] Learn PEG
-- [ ] Create a PEG for config, and function to compare the two.
 - [ ] Get optional (i.e. color ls) working.
 - [ ] File creation functions.
-- [ ] Add command line options for dumping to stdout, sanity checking the config,
-- [ ] Put it together.bmai
+- [ ] Add command line options for dumping to stdout, sanity checking the config, etc.
+- [ ] Put it together.
 - [X] Basic shell that prints the parameters and help text if none provided.
 - [X] Copy config for Bash aliases and git (ignore optionals for now).
