@@ -4,7 +4,7 @@
 
 (def- aliases
   {:type :definition
-   :min-length 1
+   :min-length -1
    :each-value :string})
 
 (def- config-entry
