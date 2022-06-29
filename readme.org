@@ -2,6 +2,8 @@
 
 A Janet rewrite of my project [[https://github.com/foggerty/dotgen][dotgen]], originally written in Ruby.
 
+Note to self: the code to test if a config entry is ok should not be the code used to traverse the config.  i.e. write traversal code that uses the tests to determine if it should keep moving forward,
+
 * To do
 - [-] Yak-shaving
   - [ ] Fix key map so that CTRL+` actually works.
@@ -10,12 +12,13 @@ A Janet rewrite of my project [[https://github.com/foggerty/dotgen][dotgen]], or
   - [X] Find a WayLand desktop, or try Sway.
   - [X] Update Alacritty to hide pointer when typing
   - [X] Update OpenBSD to 7.0
+- [ ] Remember how pattern matching works and double check that it's the same as Clojure's.
 - [ ] Sanity check functions
 - [ ] Link definition to implementation with error messages.
-- [ ] Functions to translate into config code.
+- [ ] Functions to translate into actual bash config files.
 - [ ] Get optional (i.e. color ls) working.
 - [ ] File creation functions.
-- [ ] Add command line options for dumping to stdout, sanity checking the config, etc.
+- [ ] Add command line options for dumping to stdout, sanity checking the config etc.
 - [ ] Put it together.
 - [X] Basic shell that prints the parameters and help text if none provided.
 - [X] Copy config for Bash aliases and git (ignore optionals for now).

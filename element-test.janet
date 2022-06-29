@@ -15,8 +15,8 @@
 #
 #     Represents a Janet struct '{}'.
 #
-# With both :collection and :definition the following keys
-# can be used:
+# With both :collection and :definition the following keys can be
+# used:
 #
 #   :min-length
 #
@@ -37,8 +37,7 @@
 #
 #  :required
 #
-#     Same as :optional, except that each entry is expected to be
-#     present.
+#     Same as :optional, but required :-)
 #
 # Any other keys will be ignored.
 
@@ -48,15 +47,10 @@
 #
 
 (defn- basic-type? [x]
-  "True if x is one of :string, :number or :boolean, either the keywords
-or the type itself matches on of those ust read the code this was
-harder to explain than I initially thought it would be.."
-  (let [t (if (= :keyword (type x))
-            x
-            (type x))]
-    (or (= :string t)
-        (= :number t)
-        (= :boolean t))))
+  "True if x is one of :string, :number or :boolean."
+  (or (= :string x)
+      (= :number x)
+      (= :boolean x)))
 
 (defn- element? [x]
   "True if x is a struct, has a key called :type, and if :type is either
@@ -66,32 +60,36 @@ harder to explain than I initially thought it would be.."
        (or (= :collection (x :type))
            (= :definition (x :type)))))
 
+(defn- test-value [x key test]
+  "True if x doesn't contain a key called key, otherwise the result of
+applying test to x."
+  (let [value (x key)]
+    (or (nil? value)
+        (test value))))
+
 (defn- min-length-valid? [x]
   "True is x has a key called :min-length with a value of type :number.
-The value must be a whole number and > 0.
-
-If :min-length is not present, will return true."
-  (let [min-length (x :min-length)]
-    (or (not min-length)
-        (and (= :number (type min-length))
-             (<= min-length (math/trunc min-length))
-             (> min-length 0)))))
+The value must be a whole number and > 0.  If :min-length is not
+present, will return true."
+  (test-value x :min-length
+     (fn [a]
+       (and (= :number (type a))
+            (<= a (math/trunc a))
+            (> 0 a)))))
 
 (defn- each-value-valid? [x]
   "True if x has a key called :each-value, with a value that is either
-:string, :number, :boolean or another element.
-
-If :each-value is not present, will return true."
-  (let [each-value (x :each-value)]
-    (or (not each-value)
-        (or (basic-type? x)
-            (element? x)))))
+:string, :number, :boolean or another element.  If :each-value is not
+present, will return true."
+  (test-value x :each-value
+     (fn [a]
+       (or (basic-type? a)
+           (element? a)))))
 
 (defn- is-valid-definition? [x]
-  "True if x is nil or a janet struct, where:
- - Each key in the collection is a :keyword.
- - Each value of the collection must be one of :string, :number, :boolean
-or another element definition."
+  "True if x is nil or a janet struct where each key in the collection
+is a :keyword, and each value is one of :string, :number, :boolean or
+another element definition."
   (or (nil? x)
       (and
         (= :struct (type x))
@@ -113,12 +111,16 @@ or another element definition."
 ################################################################################
 ## Test functions.
 
+(defn- validate-definition [definition x]
+  "Uses definition ")
+
 (defn- valid-element? [x]
   (and (element? x)
        (min-length-valid? x)
        (each-value-valid? x)
        (required-valid? x)
        (optional-valid? x)))
+
 
 ################################################################################
 ## Public interface.

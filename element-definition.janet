@@ -9,11 +9,11 @@
 
 (def- config-entry
   {:type :definition
-   :required {:name :string
+   :required {:name        :string
               :description :string}
-   :optional {:enabled :boolean
-              :test :string
-              :aliases aliases}})
+   :optional {:enabled     :boolean
+              :test        :string
+              :aliases     aliases}})
 
 (def- config-root
   {:type :collection
