@@ -8,6 +8,6 @@ Argh..... Recursion breaks my brain sometimes......
 
 2 - Detailed error reporting.
 
-3 - Break out the configuration definition into own file.  Then modify validation routines to follow configuration when validating configuration.
+3 - Add in os-dependant options.
 
-4 - Code to validate configuration.  Can then split out into own module.
+4 - Break out the configuration definition into own file.  Then modify validation routines to follow definition when validating configuration.  Put into separate library.
