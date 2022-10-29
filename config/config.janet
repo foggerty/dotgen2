@@ -1,5 +1,3 @@
-# Configuration root.
-
 (def config
   [{:name "Common aliases"
     :description "Avoid common foot-bullets in the shell."
@@ -10,12 +8,16 @@
               :grep "grep --color=auto"}}
 
    {:name "Git"
+    :description "Useful aliases for Git."
     :test "which git"
-    :description "Useful aliases fot Git."
-    :enabled false
-    :aliases {:gts  "git status -s -b --column"
-              :gtc  "git checkout"
-              :gtl  "git log --graph --decorate=full"
-              :gtlt "git log --graph --format=\"%Cgreen %h %p %Cred%d %Cblue%cn - %ar %Creset%s\""
-              :gtb  "git branch -vva"
-              :gtp  "git pull --rebase"}}])
+    :enabled false}
+
+   {:name "Home bin folder."
+    :description "Add home bin folder to path."
+    :test "[ -d \"$HOME/bin\" ]"
+    :paths {:path "$HOME/bin"}}
+
+   {:name "Local bin folder."
+    :description "Add ~/.local/bin to path, after ~/bin."
+    :test "[ -d \"$HOME/.local/bin\" ]"
+    :paths {:path "$HOME/.local/bin"}   }])
