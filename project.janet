@@ -3,5 +3,5 @@
  :description "Declarative, repeatable, cross-platform bash configuration.")
 
 (declare-executable
- :name "test0r"
+ :name "dotgen"
  :entry "main.janet")

@@ -2,12 +2,13 @@
 
 A Janet rewrite of my project [[https://github.com/foggerty/dotgen][dotgen]], originally written in Ruby.
 
-Argh..... Recursion breaks my brain sometimes......
+Argh..... Recursion breaks my brain sometimes (a lot)......
 
-1 - Simple program to take configuration, make sure that it's valid, don't worry about error messages yet, just fail if it's bad.  Spits out dot files.
-
-2 - Detailed error reporting.
-
-3 - Add in os-dependant options.
-
-4 - Break out the configuration definition into own file.  Then modify validation routines to follow definition when validating configuration.  Put into separate library.
+1. Simple program to take configuration, make sure that it's valid.  Not worrying about error messages yet, just fail if it's bad.  Spits out dot files.
+2. Use argspare thingie from spork.
+3. Detailed error reporting.
+4. Cmd line options to preview output before writing etc.
+5. Add in os-dependant options.
+6. Break out the configuration definition into own file.  Then modify validation routines to follow definition when validating configuration.  Put into separate library.
+7. Incorporate lib into main program.
+8. Profit.
