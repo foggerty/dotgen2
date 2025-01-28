@@ -8,7 +8,7 @@
               :ls   "ls -h"}}
 
    {:name "Git"
-    :enabled false
+    :enabled true
     :description "Useful aliases for Git."
     :test "which git"
     :aliases {:gts     "git status"
