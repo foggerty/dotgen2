@@ -1,5 +1,6 @@
 (import ./config/config :as cfg)
 (import ./element-tests :as tests)
+(import ./dotgen-generation :as gen)
 
 (defn show-help []
   (print "DotGen V2\n"))

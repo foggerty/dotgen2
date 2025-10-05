@@ -4,13 +4,15 @@
 ##
 #
 
+(import ./element-tests :as test)
+
 (def- .profile)
 
 (def- .bash_profile
   "source ~/.profile
 source ~/.bashrc")
 
-(def- bash-headers
+(def- bashrc-headers
   "# Load aliases
 if [ -f ~/.aliases ]; then
     source ~/.aliases
@@ -25,9 +27,13 @@ shopt -s checkwinsize")
 
 (def- .bashrc)
 
-(def- write-element [element]
+(defn write-element [element]
   "Outputs config defined in element to the correct Bash files.")
 
-(def- write-elements [config]
+(defn write-elements [config]
   "Outputs each config element to the correct Bash files."
   (each write-element config))
+
+(defn enabled-elements [elements]
+  (filter (fn [element] (test/has-optional-key? element)
+            elements)))
