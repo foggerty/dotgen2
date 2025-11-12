@@ -27,6 +27,11 @@ value is of type 'value-type'."
       (has-key? element key-name value-type)))
 
 
+(defn enabled? [element]
+  "True if there is no :enabled key, or it exists and is true."
+  (or (nil? (element :enabled))
+      (= true (element :enabled))))
+
 (defn- run-test [test error-message]
   {:passed (eval test)
    :message error-message})

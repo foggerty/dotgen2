@@ -4,13 +4,16 @@
 ##
 #
 
-(import ./element-tests :as test)
+(import /tests)
+
 
 (def- .profile)
+
 
 (def- .bash_profile
   "source ~/.profile
 source ~/.bashrc")
+
 
 (def- bashrc-headers
   "# Load aliases
@@ -25,15 +28,36 @@ HISTFILESIZE=2000
 shopt -s histappend
 shopt -s checkwinsize")
 
+
 (def- .bashrc)
 
-(defn write-element [element]
-  "Outputs config defined in element to the correct Bash files.")
 
-(defn write-elements [config]
-  "Outputs each config element to the correct Bash files."
-  (each write-element config))
+(defn gen-alias [element]
+  (let [result @[]
+        aliases (element :aliases)]
+    (if aliases
+      (do
+        (array/push result (string "# " (element :name)))
+        (eachp [alias value] aliases
+          (array/push result
+                      (string (string/ascii-upper alias) "=" value)))
+        (array/push result "")))
+    result))
+
+
+(defn gen-aliases [elements]
+  "Genreate an array representing the .aliases file."
+  (let [result @[]]
+    (loop [element :in elements]
+      (array/push result (gen-alias element)))
+    (flatten result)))
+
 
 (defn enabled-elements [elements]
-  (filter (fn [element] (test/has-optional-key? element)
-            elements)))
+  (filter enabled? elements))
+
+
+(defn test [elements]
+  (loop [line :in
+         (gen-aliases (enabled-elements elements))]
+    (print line)))
